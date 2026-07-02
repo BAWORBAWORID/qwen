@@ -1,0 +1,7 @@
+[build]
+builder = "dockerfile"
+
+[deploy]
+startCommand = "bash start.sh"
+healthcheckPath = "/dashboard"
+healthcheckTimeout = 30
