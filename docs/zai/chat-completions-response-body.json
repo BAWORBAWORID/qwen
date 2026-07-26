@@ -1,0 +1,34 @@
+data: {"type":"chat:completion","data":{"delta_content":"1.  Identify the","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" core question: The user","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" is asking for the result","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" of \"2+2","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":"\".\n2.  Perform","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" the mathematical operation: ","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":"2 + 2 =","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" 4.\n3.","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":"  Formulate the response","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":": State the answer clearly","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" and concisely.","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" \"2 + 2","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" = 4\" or","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":" simply \"4\".","phase":"thinking"}}
+
+data: {"type":"chat:completion","data":{"delta_content":"2 + 2 = 4","phase":"answer"}}
+
+data: {"type":"chat:completion","data":{"phase":"other","usage":{"prompt_tokens":19,"completion_tokens":78,"total_tokens":97,"prompt_tokens_details":{}}}}
+
+data: {"type":"chat:completion","data":{"phase":"done","done":true}}
+

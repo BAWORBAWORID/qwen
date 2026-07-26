@@ -2,6 +2,6 @@
 builder = "dockerfile"
 
 [deploy]
-startCommand = "bash start.sh"
-healthcheckPath = "/dashboard"
+startCommand = "bun src/index.tsx"
+healthcheckPath = "/health"
 healthcheckTimeout = 30

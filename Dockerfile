@@ -1,26 +1,44 @@
-FROM ubuntu:22.04
+FROM oven/bun:1-slim
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV BUN_INSTALL=/root/.bun
-ENV PATH="$BUN_INSTALL/bin:$PATH"
-
-RUN apt-get update -qq && \
-    apt-get install -y -qq curl git unzip && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN curl -fsSL https://bun.sh/install | bash
+# Install system dependencies needed for CloakBrowser and Playwright Chromium
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    unzip \
+    ca-certificates \
+    libnss3 \
+    libnspr4 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libdbus-1-3 \
+    libxcb1 \
+    libxkbcommon0 \
+    libxdg-utils \
+    libxcomposite1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxrandr2 \
+    libgbm1 \
+    libasound2 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-RUN git clone https://github.com/youssefvdel/qwen-gate.git /app/qwen-gate
+# Copy dependency manifests
+COPY package.json bun.lock* ./
 
-WORKDIR /app/qwen-gate
+# Install npm dependencies
+RUN bun install --production
 
-RUN bun install
+# Copy application files
+COPY . .
 
-COPY start.sh /app/qwen-gate/start.sh
+# Expose server port
+EXPOSE 26405
 
-EXPOSE 8080
-
-CMD ["bash", "start.sh"]
+# Run the server
+CMD ["bun", "src/index.tsx"]
