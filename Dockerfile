@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libdbus-1-3 \
     libxcb1 \
     libxkbcommon0 \
-    libxdg-utils \
+    xdg-utils \
     libxcomposite1 \
     libxdamage1 \
     libxext6 \
