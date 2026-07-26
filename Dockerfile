@@ -28,6 +28,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+ENV HOST=0.0.0.0
+ENV PORT=26405
+
 # Copy dependency manifests
 COPY package.json bun.lock* ./
 
