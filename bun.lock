@@ -7,10 +7,11 @@
       "dependencies": {
         "@hono/node-server": "^2.0.3",
         "@types/jsdom": "21.1.7",
-        "cloakbrowser": "^0.4.3",
+        "cloakbrowser": "^0.5.2",
         "dotenv": "^16.6.1",
         "hono": "^4.12.21",
         "jsdom": "^25.0.0",
+        "mmdb-lib": "^3.0.2",
         "playwright": "^1.60.0",
         "playwright-core": "^1.61.0",
         "puppeteer": "^25.2.1",
@@ -284,7 +285,7 @@
 
     "cliui": ["cliui@9.0.1", "", { "dependencies": { "string-width": "^7.2.0", "strip-ansi": "^7.1.0", "wrap-ansi": "^9.0.0" } }, "sha512-k7ndgKhwoQveBL+/1tqGJYNz097I7WOvwbmmU2AR5+magtbjPWQTS1C5vzGkBC8Ym8UWRzfKUzUUqFLypY4Q+w=="],
 
-    "cloakbrowser": ["cloakbrowser@0.4.3", "", { "dependencies": { "tar": "^7.0.0" }, "peerDependencies": { "mmdb-lib": ">=2.0.0", "playwright-core": ">=1.53.0", "puppeteer-core": ">=21.0.0", "socks-proxy-agent": ">=10.0.0" }, "optionalPeers": ["mmdb-lib", "playwright-core", "puppeteer-core", "socks-proxy-agent"], "bin": { "cloakbrowser": "dist/cli.js" } }, "sha512-cbfT2+ET3LUlctxEytOocPs4yd7RfjCdi2wNwbTmbjERXHRnvfjh6WL2U5koIqp6p3GOsSGdhH70wQKjwsX49w=="],
+    "cloakbrowser": ["cloakbrowser@0.5.2", "", { "dependencies": { "tar": "^7.0.0" }, "peerDependencies": { "mmdb-lib": ">=2.0.0", "playwright-core": ">=1.53.0", "puppeteer-core": ">=21.0.0", "socks-proxy-agent": ">=10.0.0" }, "optionalPeers": ["mmdb-lib", "playwright-core", "puppeteer-core", "socks-proxy-agent"], "bin": { "cloakbrowser": "dist/cli.js" } }, "sha512-vXMWM1HzI87CGUrOobMpTu/GqPn2eZbNcImhMMjF/48/M12iZEWVolrquY3ot0YI++ddYjoVb71hkodpRsRlIg=="],
 
     "clone-deep": ["clone-deep@0.2.4", "", { "dependencies": { "for-own": "^0.1.3", "is-plain-object": "^2.0.1", "kind-of": "^3.0.2", "lazy-cache": "^1.0.3", "shallow-clone": "^0.1.2" } }, "sha512-we+NuQo2DHhSl+DP6jlUiAhyAjBQrYnpOk15rN6c6JSPScjiCLh8IbSU+VTcph6YS3o7mASE8a0+gbZ7ChLpgg=="],
 
@@ -425,6 +426,8 @@
     "mitt": ["mitt@3.0.1", "", {}, "sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw=="],
 
     "mixin-object": ["mixin-object@2.0.1", "", { "dependencies": { "for-in": "^0.1.3", "is-extendable": "^0.1.1" } }, "sha512-ALGF1Jt9ouehcaXaHhn6t1yGWRqGaHkPFndtFVHfZXOvkIZ/yoGaSi0AHVTafb3ZBGg4dr/bDwnaEKqCXzchMA=="],
+
+    "mmdb-lib": ["mmdb-lib@3.0.2", "", {}, "sha512-7e87vk0DdWT647wjcfEtWeMtjm+zVGqNohN/aeIymbUfjHQ2T4Sx5kM+1irVDBSloNC3CkGKxswdMoo8yhqTDg=="],
 
     "modern-tar": ["modern-tar@0.7.6", "", {}, "sha512-sweCIVXzx1aIGTCdzcMlSZt1h8k5Tmk08VNAuRk3IU28XamGiOH5ypi11g6De2CH7PhYqSSnGy2A/EFhbWnVKg=="],
 
