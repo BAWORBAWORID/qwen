@@ -8,7 +8,8 @@ import crypto from 'node:crypto';
 import type { AuthState } from '../types/auth.ts';
 import { loginFreshViaBrowser, loginFreshViaFetch, loginViaTempContext } from './loginHelpers.ts';
 import { logStore } from './logStore.ts';
-import { getActivePage, getBrowser, Mutex } from './playwright.ts';
+import { getActivePage, getBrowser } from './playwright.ts';
+import { Mutex } from '../utils/mutex.ts';
 
 const loginMutex = new Mutex();
 

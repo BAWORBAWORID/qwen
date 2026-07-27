@@ -734,8 +734,8 @@ export async function loadSessionFromProfile(
         if (password) {
           const outcome = await autoLoginViaBrowser(email, password, {
             provider: 'deepseek',
-            authUrl: 'https://chat.deepseek.com/',
-            authPagePaths: ['/auth', '/login'],
+            authUrl: 'https://chat.deepseek.com/sign_in',
+            authPagePaths: ['/sign_in', '/auth', '/login'],
           });
 
           if (outcome.status === 'success' && outcome.token) {

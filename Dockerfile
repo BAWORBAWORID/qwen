@@ -1,7 +1,9 @@
 FROM oven/bun:1-slim
 
 # Install system dependencies needed for CloakBrowser and Playwright Chromium
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Auto-accept EULA for mscorefonts to prevent interactive prompt hanging during build
+RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections && \
+    apt-get update && apt-get install -y --no-install-recommends \
     curl \
     unzip \
     ca-certificates \
@@ -24,12 +26,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libasound2 \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
+    fontconfig \
+    ttf-mscorefonts-installer \
+    && fc-cache -f -v \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 ENV HOST=0.0.0.0
 ENV PORT=26405
+ENV CLOAKBROWSER_SUPPRESS_FONT_WARNING=1
 
 # Copy dependency manifests
 COPY package.json bun.lock* ./

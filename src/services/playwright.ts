@@ -45,29 +45,8 @@ export function validateQwenUrl(url: string): void {
   }
 }
 
-export class Mutex {
-  private queue: (() => void)[] = [];
-  private locked = false;
-  async acquire(): Promise<() => void> {
-    if (!this.locked) {
-      this.locked = true;
-      return () => this.release();
-    }
-    return new Promise<() => void>((resolve) => {
-      this.queue.push(() => {
-        resolve(() => this.release());
-      });
-    });
-  }
-  private release(): void {
-    const next = this.queue.shift();
-    if (next) {
-      next();
-    } else {
-      this.locked = false;
-    }
-  }
-}
+import { Mutex } from '../utils/mutex.ts';
+export { Mutex };
 
 async function getCookies(email?: string): Promise<string> {
   if (process.env.TEST_MOCK_PLAYWRIGHT) return 'token=mock';

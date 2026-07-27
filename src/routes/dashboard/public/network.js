@@ -1,17 +1,24 @@
 function fmtJson(raw) {
   if (!raw) return '';
-  if (typeof raw === 'string') {
+  var s = typeof raw === 'string' ? raw : String(raw);
+  var isTruncated = false;
+  if (s.length > 50000) {
+    s = s.substring(0, 50000) + '... (truncated)';
+    isTruncated = true;
+  }
+  if (typeof raw === 'string' && !isTruncated) {
     try {
       return JSON.stringify(JSON.parse(raw), null, 2);
     } catch {
-      return raw;
+      return s;
     }
   }
-  try {
-    return JSON.stringify(raw, null, 2);
-  } catch {
-    return String(raw);
+  if (!isTruncated) {
+    try {
+      return JSON.stringify(raw, null, 2);
+    } catch {}
   }
+  return s;
 }
 
 function methodBadgeClass(method) {
@@ -59,6 +66,7 @@ function truncateUrl(url, maxLen) {
 
 /* ── State ── */
 var allEntries = [];
+var openEntryIds = {};
 
 /* ── Filter ── */
 function onFilterChange() {
@@ -149,9 +157,11 @@ function renderNetworkEntries(entries) {
     var card = document.createElement('div');
     card.className = 'net-entry';
 
+    var isOpen = openEntryIds[e.id] ? ' open' : '';
+    
     /* ── Entry Header ── */
     card.innerHTML =
-      '<div class="net-entry-header" onclick="toggleEntry(this)">' +
+      '<div class="net-entry-header' + isOpen + '" data-id="' + escHtml(e.id) + '" onclick="toggleEntry(this)">' +
       '<span class="badge ' +
       methodBadgeClass(method) +
       '">' +
@@ -181,7 +191,7 @@ function renderNetworkEntries(entries) {
       ts +
       '</span>' +
       '</div>' +
-      '<div class="net-entry-body">' +
+      '<div class="net-entry-body' + isOpen + '">' +
       renderEntryDetail(e) +
       '</div>';
 
@@ -256,6 +266,8 @@ function renderEntryDetail(entry) {
 
   /* Stream chunks if present */
   if (stream && stream.chunks && stream.chunks.length > 0) {
+    var chunkStr = stream.chunks.join('\\n');
+    if (chunkStr.length > 50000) chunkStr = chunkStr.substring(0, 50000) + '\\n... (truncated)';
     html +=
       '<div class="detail-section">' +
       '<div class="section-header"><span class="section-arrow">\u25b6</span> Stream Chunks (' +
@@ -264,7 +276,7 @@ function renderEntryDetail(entry) {
       stream.chunks.length +
       ')</div>' +
       '<div class="section-body"><pre>' +
-      escHtml(stream.chunks.join('\\n')) +
+      escHtml(chunkStr) +
       '</pre></div>' +
       '</div>';
   }
@@ -288,9 +300,16 @@ function renderEntryDetail(entry) {
 
 /* ── Toggle entry card ── */
 function toggleEntry(header) {
+  var id = header.getAttribute('data-id');
   header.classList.toggle('open');
   var body = header.nextElementSibling;
   if (body) body.classList.toggle('open');
+  
+  if (header.classList.contains('open')) {
+    openEntryIds[id] = true;
+  } else {
+    delete openEntryIds[id];
+  }
 }
 
 /* ── Init ── */

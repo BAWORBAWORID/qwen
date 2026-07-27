@@ -401,23 +401,27 @@ export function registerDashboardRoutes(app: Hono): void {
           return c.json(models.map((m: any) => ({ id: m.id, name: m.id, description: m.description || '' })));
         } else if (provider === 'deepseek') {
           const models = await fetchDeepseekModels();
+          if (models.length > 0) return c.json(models);
+          
+          const { PROVIDER_MODELS } = await import('../../utils/providerModels.ts');
           return c.json(
-            models.length > 0
-              ? models
-              : [
-                  { id: 'deepseek-v4-flash', name: 'DeepSeek V4 Flash', description: 'Default model — fast and efficient' },
-                  { id: 'deepseek-v4-pro', name: 'DeepSeek V4 Pro', description: 'Expert model with enhanced reasoning' },
-                ],
+            PROVIDER_MODELS.filter(m => m.owned_by === 'deepseek').map(m => ({
+              id: m.id,
+              name: m.id.split('/').pop(),
+              description: m.description || ''
+            }))
           );
         } else if (provider === 'glm') {
           const models = await fetchGlmModels();
+          if (models.length > 0) return c.json(models);
+
+          const { PROVIDER_MODELS } = await import('../../utils/providerModels.ts');
           return c.json(
-            models.length > 0
-              ? models
-              : [
-                  { id: 'glm-4.7', name: 'GLM-4.7', description: 'Latest general-purpose model' },
-                  { id: 'glm-4v', name: 'GLM-4V', description: 'Vision-capable multimodal model' },
-                ],
+            PROVIDER_MODELS.filter(m => m.owned_by === 'glm').map(m => ({
+              id: m.id,
+              name: m.id.split('/').pop(),
+              description: m.description || ''
+            }))
           );
         } else {
           return c.json({ error: 'Unknown provider' }, 400);
@@ -513,13 +517,22 @@ export function registerDashboardRoutes(app: Hono): void {
         const acct = getAccountByEmail(email);
         if (!acct) return c.json({ error: 'Account not found' }, 404);
 
-        // Launch headless:false — user must complete captcha manually
-        const { loginDeepSeekManual } = await import('../../services/deepseekLogin.ts');
+        // If no X11/DISPLAY, headed login crashes. Try headless auto-login instead.
+        const { loginDeepseekAuto, loginDeepSeekManual } = await import('../../services/deepseekLogin.ts');
+        
+        const loginFn = process.env.DISPLAY ? loginDeepSeekManual : async (e: string, p: string) => {
+          const res = await loginDeepseekAuto(e, p);
+          return res.status === 'success' ? res.result : null;
+        };
 
-        loginDeepSeekManual(email, acct.password).then((result) => {
+        loginFn(email, acct.password).then((result: any) => {
           if (result) {
             setProviderState(email, 'deepseek', result);
           }
+        }).catch((err: any) => {
+          import('../../services/logStore.ts').then(({ logStore }) => {
+            logStore.log('error', 'deepseek-login', `deepseek manual login error for ${email}: ${err.message}`);
+          });
         });
 
         return c.json({ ok: true, message: `Browser opened for ${email}. Complete login in the browser window.` });
@@ -539,14 +552,23 @@ export function registerDashboardRoutes(app: Hono): void {
         const acct = getAccountByEmail(email);
         if (!acct) return c.json({ error: 'Account not found' }, 404);
 
-        // Launch headless:false — user must complete captcha manually
-        const { loginGlmManual } = await import('../../services/glmLogin.ts');
+        // If no X11/DISPLAY, headed login crashes. Try headless auto-login instead.
+        const { loginGlmAuto, loginGlmManual } = await import('../../services/glmLogin.ts');
 
         // Run async — return immediately, let the user poll for completion
-        loginGlmManual(email, acct.password).then((result) => {
+        const loginFn = process.env.DISPLAY ? loginGlmManual : async (e: string, p: string) => {
+          const res = await loginGlmAuto(e, p);
+          return res.status === 'success' ? res.result : null;
+        };
+
+        loginFn(email, acct.password).then((result: any) => {
           if (result) {
             setProviderState(email, 'glm', result);
           }
+        }).catch((err: any) => {
+          import('../../services/logStore.ts').then(({ logStore }) => {
+            logStore.log('error', 'glm-login', `glm manual login error for ${email}: ${err.message}`);
+          });
         });
 
         return c.json({ ok: true, message: `Browser opened for ${email}. Complete login in the browser window.` });

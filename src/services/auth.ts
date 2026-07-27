@@ -158,18 +158,20 @@ export async function initAuth(onAccountReady?: (email: string) => Promise<void>
   rebuildEmailIndex();
 
   try {
-    // Phase 1: Load tokens from browser profiles — max 3 concurrent Chromium instances
-    const MAX_CONCURRENT_PROFILE_LOADS = 3;
+    // Phase 1: Load tokens from browser profiles — max 10 concurrent Chromium instances
+    const MAX_CONCURRENT_PROFILE_LOADS = 10;
     const loadResults: Array<{ acct: (typeof accounts)[0]; source: string | null }> = [];
 
     for (let i = 0; i < accounts.length; i += MAX_CONCURRENT_PROFILE_LOADS) {
       const batch = accounts.slice(i, i + MAX_CONCURRENT_PROFILE_LOADS);
       const batchResults = await Promise.allSettled(
         batch.map(async (acct) => {
-          const profileState = await loadCookiesFromProfile(acct.email);
-          if (profileState) {
-            acct.providerStates.qwen = { ...profileState, lastLoginAttempt: null };
-            return { acct, source: 'profile' as const };
+          if (!acct.providers || acct.providers.includes('qwen')) {
+            const profileState = await loadCookiesFromProfile(acct.email);
+            if (profileState) {
+              acct.providerStates.qwen = { ...profileState, lastLoginAttempt: null };
+              return { acct, source: 'profile' as const };
+            }
           }
           return { acct, source: null as string | null };
         }),
@@ -181,48 +183,53 @@ export async function initAuth(onAccountReady?: (email: string) => Promise<void>
 
     // Phase 1.5: Load existing sessions from browser profile (no re-login)
     // For DeepSeek/GLM, check the persistent profile for valid tokens before auto-login
-    for (const acct of accounts) {
-      const providers = acct.providers || ['qwen'];
+    for (let i = 0; i < accounts.length; i += MAX_CONCURRENT_PROFILE_LOADS) {
+      const batch = accounts.slice(i, i + MAX_CONCURRENT_PROFILE_LOADS);
+      await Promise.allSettled(
+        batch.map(async (acct) => {
+          const providers = acct.providers || ['qwen'];
 
-      // DeepSeek: try to load from profile
-      if (providers.includes('deepseek') && !acct.providerStates.deepseek?.token) {
-        try {
-          const { loadSessionFromProfile } = await import('./browserProfiles.ts');
-          const session = await loadSessionFromProfile(acct.email, 'deepseek');
-          if (session) {
-            acct.providerStates.deepseek = {
-              token: session.token,
-              expiresAt: session.expiresAt,
-              refreshToken: null,
-              lastLoginAttempt: null,
-              cookies: session.cookieStr || undefined,
-            };
-            logStore.log('info', 'auth', `\u2713 DeepSeek session loaded from profile for ${acct.email}`);
+          // DeepSeek: try to load from profile
+          if (providers.includes('deepseek') && !acct.providerStates.deepseek?.token) {
+            try {
+              const { loadSessionFromProfile } = await import('./browserProfiles.ts');
+              const session = await loadSessionFromProfile(acct.email, 'deepseek');
+              if (session) {
+                acct.providerStates.deepseek = {
+                  token: session.token,
+                  expiresAt: session.expiresAt,
+                  refreshToken: null,
+                  lastLoginAttempt: null,
+                  cookies: session.cookieStr || undefined,
+                };
+                logStore.log('info', 'auth', `\u2713 DeepSeek session loaded from profile for ${acct.email}`);
+              }
+            } catch (err: any) {
+              logStore.log('warn', 'auth', `DeepSeek profile load failed for ${acct.email}: ${err.message}`);
+            }
           }
-        } catch (err: any) {
-          logStore.log('warn', 'auth', `DeepSeek profile load failed for ${acct.email}: ${err.message}`);
-        }
-      }
 
-      // GLM: try to load from profile
-      if (providers.includes('glm') && !acct.providerStates.glm?.token) {
-        try {
-          const { loadSessionFromProfile } = await import('./browserProfiles.ts');
-          const session = await loadSessionFromProfile(acct.email, 'glm');
-          if (session) {
-            acct.providerStates.glm = {
-              token: session.token,
-              expiresAt: session.expiresAt,
-              refreshToken: null,
-              lastLoginAttempt: null,
-              cookies: session.cookieStr || undefined,
-            };
-            logStore.log('info', 'auth', `\u2713 GLM session loaded from profile for ${acct.email}`);
+          // GLM: try to load from profile
+          if (providers.includes('glm') && !acct.providerStates.glm?.token) {
+            try {
+              const { loadSessionFromProfile } = await import('./browserProfiles.ts');
+              const session = await loadSessionFromProfile(acct.email, 'glm');
+              if (session) {
+                acct.providerStates.glm = {
+                  token: session.token,
+                  expiresAt: session.expiresAt,
+                  refreshToken: null,
+                  lastLoginAttempt: null,
+                  cookies: session.cookieStr || undefined,
+                };
+                logStore.log('info', 'auth', `\u2713 GLM session loaded from profile for ${acct.email}`);
+              }
+            } catch (err: any) {
+              logStore.log('warn', 'auth', `GLM profile load failed for ${acct.email}: ${err.message}`);
+            }
           }
-        } catch (err: any) {
-          logStore.log('warn', 'auth', `GLM profile load failed for ${acct.email}: ${err.message}`);
-        }
-      }
+        })
+      );
     }
 
     // Persist any provider states loaded from profiles
@@ -230,7 +237,8 @@ export async function initAuth(onAccountReady?: (email: string) => Promise<void>
     saveAccountsToFile(accounts);
 
     // Phase 2: No auto-login at startup. All tokens loaded from profiles above.
-    // Auto-login (Qwen/DeepSeek) only happens when user clicks Login button in dashboard.
+    // DeepSeek auto-login fallback is handled natively in loadSessionFromProfile (Phase 1.5).
+    // GLM requires manual click on Login in dashboard.
 
     // Phase 3: Run post-login callbacks in parallel
     if (onAccountReady) {

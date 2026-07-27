@@ -27,15 +27,25 @@ async function refreshHealth() {
   }
   var acctData = await apiFetch('/accounts');
   if (Array.isArray(acctData)) {
+    var total = acctData.length;
+    setText('kpiTotalAccounts', total);
     var authed = 0;
+    var activeSessions = 0;
     var totalReqs = 0;
     for (var i = 0; i < acctData.length; i++) {
       if (acctData[i].authenticated) authed++;
+      if (acctData[i].providers) {
+        if (acctData[i].providers.qwen || acctData[i].providers.deepseek || acctData[i].providers.glm) {
+          activeSessions++;
+        }
+      }
       totalReqs += acctData[i].totalRequests || 0;
     }
     setText('kpiAuthenticated', authed);
     var authPct = total > 0 ? Math.round((authed / total) * 100) : 0;
     setText('kpiAuthenticatedSub', authPct + '% of ' + total);
+    setText('kpiActiveSessions', activeSessions);
+    setText('kpiActiveSessionsSub', 'active accounts');
     setText('kpiTotalRequests', totalReqs);
   }
 }
@@ -51,8 +61,6 @@ async function refreshPool() {
   setText('poolWaiting', wait);
   setText('poolAvailable', avail);
   setText('poolTotal', total);
-  setText('kpiActiveSessions', inUse);
-  setText('kpiActiveSessionsSub', 'of ' + total + ' sessions');
   setText('kpiQueue', wait);
   setText('kpiQueueSub', 'queued');
   var pct = total > 0 ? Math.min(100, Math.round((inUse / total) * 100)) : 0;

@@ -366,9 +366,7 @@ export async function createQwenStream(
       `[Qwen] Fetch POST ${url.substring(0, 100)} account=${currentAccountEmail || '?'} token_len=${cookieStr.length} payload_len=${bodyStr.length}`,
     );
 
-    const response = await browserlessFetch(url, {
-      method: 'POST',
-      headers: {
+    const headers = {
         accept: 'application/json, text/plain, */*',
         'accept-language': 'en-US,en;q=0.9',
         'content-type': 'application/json',
@@ -387,11 +385,28 @@ export async function createQwenStream(
         'x-accel-buffering': 'no',
         'x-request-id': crypto.randomUUID(),
         timezone: cachedTimezone,
-      },
+    };
+
+    const debugEntry = createNetworkEntry({
+      url,
+      method: 'POST',
+      headers,
+      body: bodyStr,
+      category: 'chat',
+      accountEmail: currentAccountEmail,
+    });
+    lastDebugEntryId = debugEntry.id;
+
+    const response = await browserlessFetch(url, {
+      method: 'POST',
+      headers,
       body: bodyStr,
       accountEmail: currentAccountEmail,
       stream: true, // keep session alive for streaming via impers worker
     });
+    
+    recordResponse(debugEntry.id, response);
+
     logStore.log(
       'debug',
       'qwen',

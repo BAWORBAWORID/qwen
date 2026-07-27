@@ -11,7 +11,8 @@ import type { AuthState, ProviderAuthState } from '../types/auth.ts';
 import { checkPlaywrightSession, getAuthTokenMaxAgeMs } from './auth.ts';
 import { extractProviderToken } from './browserProfiles.ts';
 import { logStore } from './logStore.ts';
-import { AccountContext, createAccountContext, getActivePage, getBrowser, Mutex, removeAccountContext } from './playwright.ts';
+import { AccountContext, createAccountContext, getActivePage, getBrowser, removeAccountContext } from './playwright.ts';
+import { Mutex } from '../utils/mutex.ts';
 import { createFetchTimeout, QWEN_BX_V } from './qwen.ts';
 
 const QWEN_CHAT_URL = 'https://chat.qwen.ai';

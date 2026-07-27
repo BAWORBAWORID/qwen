@@ -19,20 +19,68 @@ const CREATED = 1_782_414_000; // 2026-06-25
 
 export const PROVIDER_MODELS: ProviderModelEntry[] = [
   // ── DeepSeek ────────────────────────────────────────────
-  // ponytail: upstream model IDs as of 2026-06 from GET /models
   {
     id: 'deepseek/deepseek-chat',
     object: 'model',
     created: CREATED,
     owned_by: 'deepseek',
-    description: 'DeepSeek Chat — general-purpose chat',
+    description: 'DeepSeek Chat (V3) — general-purpose chat',
   },
   {
     id: 'deepseek/deepseek-reasoner',
     object: 'model',
     created: CREATED,
     owned_by: 'deepseek',
-    description: 'DeepSeek Reasoner — chain-of-thought reasoning (R1)',
+    description: 'DeepSeek Reasoner (R1) — chain-of-thought reasoning',
+  },
+  {
+    id: 'deepseek/deepseek-v4-flash',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek V4 Flash — fast and efficient (latest)',
+  },
+  {
+    id: 'deepseek/deepseek-v4-pro',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek V4 Pro — expert model with enhanced reasoning (latest)',
+  },
+  {
+    id: 'deepseek/deepseek-r1-0528',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek R1-0528 — updated R1 reasoning model (May 2026)',
+  },
+  {
+    id: 'deepseek/deepseek-v3-0324',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek V3-0324 — updated V3 chat model (March 2026)',
+  },
+  {
+    id: 'deepseek/deepseek-v2.5',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek V2.5 — combined chat + coding capabilities',
+  },
+  {
+    id: 'deepseek/deepseek-coder-v2',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek Coder V2 — specialized for code generation & understanding',
+  },
+  {
+    id: 'deepseek/deepseek-prover-v2',
+    object: 'model',
+    created: CREATED,
+    owned_by: 'deepseek',
+    description: 'DeepSeek Prover V2 — mathematical proof & theorem reasoning',
   },
   {
     id: 'deepseek/deepseek-vl2',
@@ -103,6 +151,13 @@ export const PROVIDER_MODELS: ProviderModelEntry[] = [
 const PROVIDER_MODEL_SPECS: Record<string, { max_context: number; max_output: number; modalities: string[] }> = {
   'deepseek/deepseek-chat': { max_context: 128000, max_output: 8192, modalities: ['text'] },
   'deepseek/deepseek-reasoner': { max_context: 128000, max_output: 8192, modalities: ['text'] },
+  'deepseek/deepseek-v4-flash': { max_context: 128000, max_output: 8192, modalities: ['text'] },
+  'deepseek/deepseek-v4-pro': { max_context: 128000, max_output: 16000, modalities: ['text'] },
+  'deepseek/deepseek-r1-0528': { max_context: 128000, max_output: 16000, modalities: ['text'] },
+  'deepseek/deepseek-v3-0324': { max_context: 128000, max_output: 8192, modalities: ['text'] },
+  'deepseek/deepseek-v2.5': { max_context: 128000, max_output: 8192, modalities: ['text'] },
+  'deepseek/deepseek-coder-v2': { max_context: 128000, max_output: 8192, modalities: ['text'] },
+  'deepseek/deepseek-prover-v2': { max_context: 128000, max_output: 8192, modalities: ['text'] },
   'deepseek/deepseek-vl2': { max_context: 32000, max_output: 8192, modalities: ['text', 'image'] },
   'glm/glm-5.2': { max_context: 131072, max_output: 16384, modalities: ['text', 'image'] },
   'glm/glm-5.1': { max_context: 131072, max_output: 16384, modalities: ['text', 'image'] },
