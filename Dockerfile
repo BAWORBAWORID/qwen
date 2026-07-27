@@ -1,9 +1,7 @@
 FROM oven/bun:1-slim
 
 # Install system dependencies needed for CloakBrowser and Playwright Chromium
-# Auto-accept EULA for mscorefonts to prevent interactive prompt hanging during build
-RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections && \
-    apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     unzip \
     ca-certificates \
@@ -27,7 +25,7 @@ RUN echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula sele
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
     fontconfig \
-    ttf-mscorefonts-installer \
+    fonts-liberation \
     && fc-cache -f -v \
     && rm -rf /var/lib/apt/lists/*
 
