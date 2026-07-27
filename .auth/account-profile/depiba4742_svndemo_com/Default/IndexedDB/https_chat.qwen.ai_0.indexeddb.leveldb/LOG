@@ -1,0 +1,16 @@
+2026/07/27-19:25:15.657 8ceb9 Creating DB /root/opengate/.auth/account-profile/depiba4742_svndemo_com/Default/IndexedDB/https_chat.qwen.ai_0.indexeddb.leveldb since it was missing.
+2026/07/27-19:25:15.674 8ceb9 Delete type=3 #1
+2026/07/27-19:25:33.923 8ceb7 Level-0 table #5: started
+2026/07/27-19:25:33.942 8ceb7 Level-0 table #5: 234538 bytes OK
+2026/07/27-19:25:33.949 8ceb7 Delete type=0 #3
+2026/07/27-19:25:34.435 8ceb7 Level-0 table #7: started
+2026/07/27-19:25:34.455 8ceb7 Level-0 table #7: 199696 bytes OK
+2026/07/27-19:25:34.458 8ceb7 Delete type=0 #4
+2026/07/27-19:25:34.460 8ceb7 Manual compaction at level-0 from '\x00\x02\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/07/27-19:25:34.460 8ceb7 Manual compaction at level-1 from '\x00\x02\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at '\x00\x02\x01\x02\x03\x00\x00\x00\x00\x00\x00,@' @ 1697 : 1
+2026/07/27-19:25:34.460 8ceb7 Compacting 1@1 + 1@2 files
+2026/07/27-19:25:34.472 8ceb7 Generated table #8@1: 19 keys, 536 bytes
+2026/07/27-19:25:34.472 8ceb7 Compacted 1@1 + 1@2 files => 536 bytes
+2026/07/27-19:25:34.477 8ceb7 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/07/27-19:25:34.477 8ceb7 Delete type=2 #7
+2026/07/27-19:25:34.478 8ceb7 Manual compaction at level-1 from '\x00\x02\x01\x02\x03\x00\x00\x00\x00\x00\x00,@' @ 1697 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at (end)

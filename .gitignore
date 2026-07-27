@@ -39,7 +39,6 @@ playwright-report/
 
 # Runtime and browser automation
 .qwen/
-.auth/
 browser-profile/
 cookies/
 sessions/

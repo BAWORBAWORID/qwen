@@ -1,0 +1,15 @@
+2026/07/27-19:30:54.951 8dd12 Recovering log #16
+2026/07/27-19:30:54.951 8dd12 Level-0 table #18: started
+2026/07/27-19:30:54.956 8dd12 Level-0 table #18: 184 bytes OK
+2026/07/27-19:30:54.962 8dd12 Delete type=0 #16
+2026/07/27-19:30:54.963 8dd12 Delete type=3 #14
+2026/07/27-19:30:54.971 8dd14 Level-0 table #21: started
+2026/07/27-19:30:54.975 8dd14 Level-0 table #21: 501 bytes OK
+2026/07/27-19:30:54.977 8dd14 Delete type=0 #19
+2026/07/27-19:30:54.978 8dd12 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at '\x00\x05\x00\x00\x04' @ 275 : 1
+2026/07/27-19:30:54.978 8dd12 Compacting 3@0 + 1@1 files
+2026/07/27-19:30:54.981 8dd12 Generated table #22@0: 31 keys, 712 bytes
+2026/07/27-19:30:54.981 8dd12 Compacted 3@0 + 1@1 files => 712 bytes
+2026/07/27-19:30:54.983 8dd12 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/07/27-19:30:54.983 8dd12 Delete type=2 #21
+2026/07/27-19:30:54.983 8dd12 Manual compaction at level-0 from '\x00\x05\x00\x00\x04' @ 275 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)
