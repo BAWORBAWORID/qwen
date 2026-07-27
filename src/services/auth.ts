@@ -158,8 +158,8 @@ export async function initAuth(onAccountReady?: (email: string) => Promise<void>
   rebuildEmailIndex();
 
   try {
-    // Phase 1: Load tokens from browser profiles — max 10 concurrent Chromium instances
-    const MAX_CONCURRENT_PROFILE_LOADS = 10;
+    // Phase 1: Load tokens from browser profiles — 1 by 1 to save CPU/RAM
+    const MAX_CONCURRENT_PROFILE_LOADS = 1;
     const loadResults: Array<{ acct: (typeof accounts)[0]; source: string | null }> = [];
 
     for (let i = 0; i < accounts.length; i += MAX_CONCURRENT_PROFILE_LOADS) {
