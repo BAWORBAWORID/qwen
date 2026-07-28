@@ -1,0 +1,8 @@
+2026/07/28-15:30:16.244 dec Reusing MANIFEST /app/.auth/account-profile/siliv85642_tainela_com/Default/Local Storage/leveldb/MANIFEST-000001
+2026/07/28-15:30:16.247 dec Recovering log #3
+2026/07/28-15:30:16.247 dec Level-0 table #3: started
+2026/07/28-15:30:16.249 dec Level-0 table #3: 138467 bytes OK
+2026/07/28-15:30:16.250 dec Recovering log #4
+2026/07/28-15:30:16.250 dec Reusing old log /app/.auth/account-profile/siliv85642_tainela_com/Default/Local Storage/leveldb/000004.log 
+2026/07/28-15:30:16.250 dec Delete type=0 #3
+2026/07/28-15:30:16.250 dec Delete type=2 #5

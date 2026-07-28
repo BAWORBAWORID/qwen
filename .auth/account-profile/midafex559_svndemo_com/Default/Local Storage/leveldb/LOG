@@ -1,0 +1,8 @@
+2026/07/28-15:20:38.492 6e4 Reusing MANIFEST /app/.auth/account-profile/midafex559_svndemo_com/Default/Local Storage/leveldb/MANIFEST-000001
+2026/07/28-15:20:38.494 6e4 Recovering log #3
+2026/07/28-15:20:38.495 6e4 Level-0 table #3: started
+2026/07/28-15:20:38.497 6e4 Level-0 table #3: 138469 bytes OK
+2026/07/28-15:20:38.497 6e4 Recovering log #4
+2026/07/28-15:20:38.498 6e4 Reusing old log /app/.auth/account-profile/midafex559_svndemo_com/Default/Local Storage/leveldb/000004.log 
+2026/07/28-15:20:38.498 6e4 Delete type=0 #3
+2026/07/28-15:20:38.498 6e4 Delete type=2 #5

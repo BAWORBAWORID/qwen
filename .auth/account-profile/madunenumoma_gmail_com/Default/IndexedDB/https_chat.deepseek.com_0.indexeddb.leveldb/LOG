@@ -1,17 +1,7 @@
-2026/07/27-21:58:56.460 9b0da Recovering log #92
-2026/07/27-21:58:56.461 9b0da Level-0 table #96: started
-2026/07/27-21:58:56.467 9b0da Level-0 table #96: 407 bytes OK
-2026/07/27-21:58:56.476 9b0da Delete type=3 #89
-2026/07/27-21:58:56.476 9b0da Delete type=2 #88
-2026/07/27-21:58:56.476 9b0da Delete type=0 #92
-2026/07/27-21:58:56.477 9b0da Delete type=2 #90
-2026/07/27-21:58:56.486 9b0df Level-0 table #99: started
-2026/07/27-21:58:56.491 9b0df Level-0 table #99: 500 bytes OK
-2026/07/27-21:58:56.495 9b0df Delete type=0 #97
-2026/07/27-21:58:56.496 9b0e2 Manual compaction at level-0 from '\x00\x15\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at '\x00\x15\x00\x00\x05' @ 1616 : 0
-2026/07/27-21:58:56.496 9b0e2 Compacting 2@0 + 1@1 files
-2026/07/27-21:58:56.507 9b0e2 Generated table #100@0: 19 keys, 542 bytes
-2026/07/27-21:58:56.507 9b0e2 Compacted 2@0 + 1@1 files => 542 bytes
-2026/07/27-21:58:56.511 9b0e2 compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/07/27-21:58:56.511 9b0e2 Delete type=2 #99
-2026/07/27-21:58:56.511 9b0da Manual compaction at level-0 from '\x00\x15\x00\x00\x05' @ 1616 : 0 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/07/28-14:49:59.516 316 Reusing MANIFEST /app/.auth/account-profile/madunenumoma_gmail_com/Default/IndexedDB/https_chat.deepseek.com_0.indexeddb.leveldb/MANIFEST-000095
+2026/07/28-14:49:59.516 316 Delete type=2 #94
+2026/07/28-14:49:59.516 316 Delete type=2 #96
+2026/07/28-14:49:59.517 31c Level-0 table #104: started
+2026/07/28-14:49:59.517 31c Level-0 table #104: 0 bytes OK
+2026/07/28-14:49:59.518 31c Delete type=0 #102
+2026/07/28-14:49:59.518 316 Manual compaction at level-0 from '\x00\x15\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at (end)

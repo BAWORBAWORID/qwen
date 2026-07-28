@@ -1,14 +1,1 @@
-2026/07/27-21:58:35.247 9ae25 Recovering log #64
-2026/07/27-21:58:35.248 9ae25 Level-0 table #66: started
-2026/07/27-21:58:35.252 9ae25 Level-0 table #66: 124 bytes OK
-2026/07/27-21:58:35.262 9ae25 Delete type=3 #62
-2026/07/27-21:58:35.262 9ae25 Delete type=0 #64
-2026/07/27-21:58:35.262 9ae25 Compacting 4@0 + 1@1 files
-2026/07/27-21:58:35.271 9ae25 Generated table #68@0: 17 keys, 281 bytes
-2026/07/27-21:58:35.272 9ae25 Compacted 4@0 + 1@1 files => 281 bytes
-2026/07/27-21:58:35.280 9ae25 compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/07/27-21:58:35.295 9ae25 Delete type=2 #55
-2026/07/27-21:58:35.295 9ae25 Delete type=2 #63
-2026/07/27-21:58:35.296 9ae25 Delete type=2 #66
-2026/07/27-21:58:35.296 9ae25 Delete type=2 #57
-2026/07/27-21:58:35.296 9ae25 Delete type=2 #60
+2026/07/28-14:49:55.221 2a5 Reusing MANIFEST /app/.auth/account-profile/cabek61834_svndemo_com/Default/shared_proto_db/metadata/MANIFEST-000065

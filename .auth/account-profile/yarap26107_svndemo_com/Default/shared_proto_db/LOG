@@ -1,14 +1,1 @@
-2026/07/27-21:58:35.896 9ae1c Recovering log #51
-2026/07/27-21:58:35.897 9ae1c Level-0 table #53: started
-2026/07/27-21:58:35.905 9ae1c Level-0 table #53: 2719 bytes OK
-2026/07/27-21:58:35.917 9ae1c Delete type=3 #49
-2026/07/27-21:58:35.917 9ae1c Delete type=0 #51
-2026/07/27-21:58:35.917 9ae1c Compacting 4@0 + 1@1 files
-2026/07/27-21:58:35.926 9ae1c Generated table #55@0: 71 keys, 5053 bytes
-2026/07/27-21:58:35.926 9ae1c Compacted 4@0 + 1@1 files => 5053 bytes
-2026/07/27-21:58:35.930 9ae1c compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/07/27-21:58:35.948 9ae1c Delete type=2 #44
-2026/07/27-21:58:35.948 9ae1c Delete type=2 #42
-2026/07/27-21:58:35.949 9ae1c Delete type=2 #53
-2026/07/27-21:58:35.949 9ae1c Delete type=2 #50
-2026/07/27-21:58:35.949 9ae1c Delete type=2 #47
+2026/07/28-14:49:54.712 1ce Reusing MANIFEST /app/.auth/account-profile/yarap26107_svndemo_com/Default/shared_proto_db/MANIFEST-000052

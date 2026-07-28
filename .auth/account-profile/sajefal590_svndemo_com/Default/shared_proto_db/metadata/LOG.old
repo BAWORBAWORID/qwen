@@ -1,5 +1,14 @@
-2026/07/27-21:48:33.665 9a16a Recovering log #48
-2026/07/27-21:48:33.666 9a16a Level-0 table #50: started
-2026/07/27-21:48:33.700 9a16a Level-0 table #50: 124 bytes OK
-2026/07/27-21:48:33.745 9a16a Delete type=0 #48
-2026/07/27-21:48:33.746 9a16a Delete type=3 #46
+2026/07/27-21:58:39.028 9afc5 Recovering log #51
+2026/07/27-21:58:39.029 9afc5 Level-0 table #53: started
+2026/07/27-21:58:39.033 9afc5 Level-0 table #53: 124 bytes OK
+2026/07/27-21:58:39.046 9afc5 Delete type=3 #49
+2026/07/27-21:58:39.046 9afc5 Delete type=0 #51
+2026/07/27-21:58:39.046 9afc5 Compacting 4@0 + 1@1 files
+2026/07/27-21:58:39.055 9afc5 Generated table #55@0: 17 keys, 286 bytes
+2026/07/27-21:58:39.055 9afc5 Compacted 4@0 + 1@1 files => 286 bytes
+2026/07/27-21:58:39.062 9afc5 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/07/27-21:58:39.064 9afc5 Delete type=2 #44
+2026/07/27-21:58:39.064 9afc5 Delete type=2 #42
+2026/07/27-21:58:39.064 9afc5 Delete type=2 #53
+2026/07/27-21:58:39.064 9afc5 Delete type=2 #50
+2026/07/27-21:58:39.064 9afc5 Delete type=2 #47

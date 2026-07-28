@@ -1,0 +1,8 @@
+2026/07/28-15:39:26.416 1126 Reusing MANIFEST /app/.auth/account-profile/gamemav920_tainela_com/Default/Local Storage/leveldb/MANIFEST-000001
+2026/07/28-15:39:26.419 1126 Recovering log #3
+2026/07/28-15:39:26.419 1126 Level-0 table #3: started
+2026/07/28-15:39:26.421 1126 Level-0 table #3: 138456 bytes OK
+2026/07/28-15:39:26.421 1126 Recovering log #4
+2026/07/28-15:39:26.421 1126 Reusing old log /app/.auth/account-profile/gamemav920_tainela_com/Default/Local Storage/leveldb/000004.log 
+2026/07/28-15:39:26.422 1126 Delete type=0 #3
+2026/07/28-15:39:26.422 1126 Delete type=2 #5

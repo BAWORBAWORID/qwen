@@ -1,14 +1,1 @@
-2026/07/27-21:58:35.170 9ae0e Recovering log #51
-2026/07/27-21:58:35.171 9ae0e Level-0 table #53: started
-2026/07/27-21:58:35.177 9ae0e Level-0 table #53: 124 bytes OK
-2026/07/27-21:58:35.188 9ae0e Delete type=3 #49
-2026/07/27-21:58:35.188 9ae0e Delete type=0 #51
-2026/07/27-21:58:35.189 9ae0e Compacting 4@0 + 1@1 files
-2026/07/27-21:58:35.197 9ae0e Generated table #55@0: 17 keys, 286 bytes
-2026/07/27-21:58:35.197 9ae0e Compacted 4@0 + 1@1 files => 286 bytes
-2026/07/27-21:58:35.202 9ae0e compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/07/27-21:58:35.203 9ae0e Delete type=2 #44
-2026/07/27-21:58:35.203 9ae0e Delete type=2 #42
-2026/07/27-21:58:35.203 9ae0e Delete type=2 #53
-2026/07/27-21:58:35.203 9ae0e Delete type=2 #50
-2026/07/27-21:58:35.203 9ae0e Delete type=2 #47
+2026/07/28-14:49:53.651 16 Reusing MANIFEST /app/.auth/account-profile/jidotay421_svndemo_com/Default/shared_proto_db/metadata/MANIFEST-000052

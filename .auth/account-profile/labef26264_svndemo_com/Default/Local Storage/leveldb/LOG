@@ -1,0 +1,8 @@
+2026/07/28-15:25:22.592 a68 Reusing MANIFEST /app/.auth/account-profile/labef26264_svndemo_com/Default/Local Storage/leveldb/MANIFEST-000001
+2026/07/28-15:25:22.594 a68 Recovering log #3
+2026/07/28-15:25:22.595 a68 Level-0 table #3: started
+2026/07/28-15:25:22.598 a68 Level-0 table #3: 138468 bytes OK
+2026/07/28-15:25:22.598 a68 Recovering log #4
+2026/07/28-15:25:22.598 a68 Reusing old log /app/.auth/account-profile/labef26264_svndemo_com/Default/Local Storage/leveldb/000004.log 
+2026/07/28-15:25:22.599 a68 Delete type=0 #3
+2026/07/28-15:25:22.599 a68 Delete type=2 #5

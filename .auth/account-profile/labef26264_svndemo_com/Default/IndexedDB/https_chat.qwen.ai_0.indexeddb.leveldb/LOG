@@ -1,0 +1,28 @@
+2026/07/28-15:25:03.383 99c Creating DB /app/.auth/account-profile/labef26264_svndemo_com/Default/IndexedDB/https_chat.qwen.ai_0.indexeddb.leveldb since it was missing.
+2026/07/28-15:25:03.384 99c Reusing MANIFEST /app/.auth/account-profile/labef26264_svndemo_com/Default/IndexedDB/https_chat.qwen.ai_0.indexeddb.leveldb/MANIFEST-000001
+2026/07/28-15:25:05.270 99d Level-0 table #5: started
+2026/07/28-15:25:05.272 99d Level-0 table #5: 234538 bytes OK
+2026/07/28-15:25:05.272 99d Delete type=0 #3
+2026/07/28-15:25:05.315 99d Level-0 table #7: started
+2026/07/28-15:25:05.316 99d Level-0 table #7: 234220 bytes OK
+2026/07/28-15:25:05.317 99d Delete type=0 #4
+2026/07/28-15:25:05.363 99f Level-0 table #9: started
+2026/07/28-15:25:05.366 99f Level-0 table #9: 234554 bytes OK
+2026/07/28-15:25:05.366 99f Delete type=0 #6
+2026/07/28-15:25:05.403 99c Level-0 table #11: started
+2026/07/28-15:25:05.405 99c Level-0 table #11: 177563 bytes OK
+2026/07/28-15:25:05.405 99c Delete type=0 #8
+2026/07/28-15:25:05.405 99c Manual compaction at level-0 from '\x00\x02\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at '\x00\x02\x01\x02\x03\x00\x00\x00\x00\x00\x00,@' @ 3309 : 1
+2026/07/28-15:25:05.405 99c Compacting 2@0 + 1@1 files
+2026/07/28-15:25:05.412 99c Generated table #12@0: 1440 keys, 12581 bytes
+2026/07/28-15:25:05.412 99c Compacted 2@0 + 1@1 files => 12581 bytes
+2026/07/28-15:25:05.413 99c compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/07/28-15:25:05.413 99c Delete type=2 #11
+2026/07/28-15:25:05.413 99c Manual compaction at level-0 from '\x00\x02\x01\x02\x03\x00\x00\x00\x00\x00\x00,@' @ 3309 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at (end)
+2026/07/28-15:25:05.413 99c Manual compaction at level-1 from '\x00\x02\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at '\x00\x02\x01\x02\x03\x00\x00\x00\x00\x00\x00,@' @ 5895 : 0
+2026/07/28-15:25:05.413 99c Compacting 1@1 + 1@2 files
+2026/07/28-15:25:05.416 99c Generated table #13@1: 19 keys, 537 bytes
+2026/07/28-15:25:05.416 99c Compacted 1@1 + 1@2 files => 537 bytes
+2026/07/28-15:25:05.416 99c compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/07/28-15:25:05.416 99c Delete type=2 #12
+2026/07/28-15:25:05.416 99c Manual compaction at level-1 from '\x00\x02\x01\x02\x03\x00\x00\x00\x00\x00\x00,@' @ 5895 : 0 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at (end)
