@@ -1,8 +1,0 @@
-2026/07/28-15:22:41.363 861 Reusing MANIFEST /app/.auth/account-profile/jofefac472_tainela_com/Default/Local Storage/leveldb/MANIFEST-000001
-2026/07/28-15:22:41.366 861 Recovering log #3
-2026/07/28-15:22:41.366 861 Level-0 table #3: started
-2026/07/28-15:22:41.369 861 Level-0 table #3: 138359 bytes OK
-2026/07/28-15:22:41.369 861 Recovering log #4
-2026/07/28-15:22:41.369 861 Reusing old log /app/.auth/account-profile/jofefac472_tainela_com/Default/Local Storage/leveldb/000004.log 
-2026/07/28-15:22:41.370 861 Delete type=0 #3
-2026/07/28-15:22:41.370 861 Delete type=2 #5

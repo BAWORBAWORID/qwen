@@ -153,9 +153,12 @@ function renderProviderTable(accts, pk, cfg) {
       '">' +
       '<span class="toggle-thumb"></span>' +
       '</span></span></td>';
+    
+    var setTokenBtn = pk !== 'qwen' ? '<button class="account-btn small" style="margin-left:4px" onclick="handleSetToken(\'' + escHtml(a.email) + '\', \'' + pk + '\')">Set Token</button>' : '';
     cols +=
       '<td><div class="action-cell">' +
       loginBtn +
+      setTokenBtn +
       '<button class="account-btn small danger" data-email="' +
       escHtml(a.email) +
       '" data-provider="' +
@@ -318,16 +321,40 @@ function handleProviderLogin(email, provider) {
         result = null;
       }
       if (!res.ok) throw new Error(result && result.error ? result.error.message : provider + ' login failed (' + res.status + ')');
-      showToast('Browser opened for ' + email + '. Complete login in the browser window.', 'info');
-      pollProviderLogin(email, provider, 90);
-    } catch (e) {
-      setError(e.message);
-      showToast(e.message, 'error');
+      if (result && result.message) showToast(result.message, 'info');
+      if (provider !== 'glm') {
+        pollProviderLogin(email, provider, 30);
+      } else {
+        setTimeout(loadAccounts, 2000);
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+      loadAccounts();
     } finally {
       loginBtns.forEach(function (b) {
         b.disabled = false;
         b.textContent = 'Login';
       });
+    }
+  })();
+}
+
+function handleSetToken(email, provider) {
+  var token = prompt('Enter the JWT token or cookie for ' + provider + ' (' + email + '):');
+  if (!token) return;
+  (async function () {
+    try {
+      var res = await fetch('/api/accounts/' + encodeURIComponent(email) + '/provider/' + encodeURIComponent(provider) + '/token', {
+        method: 'POST',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
+        body: JSON.stringify({ token: token.trim() })
+      });
+      var result = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(result.error || 'Failed to set token');
+      showToast('Token saved successfully for ' + provider, 'success');
+      loadAccounts();
+    } catch (e) {
+      showToast(e.message, 'error');
     }
   })();
 }

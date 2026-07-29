@@ -15,6 +15,13 @@
 
 import type { Context } from 'hono';
 import { getProviderState } from '../../../services/accountManager.ts';
+import {
+  createNetworkEntry,
+  recordResponse,
+  recordStreamChunk,
+  completeEntry,
+  errorEntry,
+} from '../../../services/networkDebug.ts';
 import { logStore } from '../../../services/logStore.ts';
 import { cleanTextOfXmlArtifacts } from '../../../tools/xmlToolParser.ts';
 import type { OpenAIRequest } from '../../../types/openai.ts';
@@ -116,7 +123,18 @@ export async function proxyViaDeepSeekWebChat(
 
   // ── Step 6: Send chat completion via wreqFetch ──
   const { wreqFetch } = await import('../../../services/wreqFetch.ts');
-  const resp = await wreqFetch(DEEPSEEK_BASE_URL + CHAT_ENDPOINT, {
+  const targetUrl = DEEPSEEK_BASE_URL + CHAT_ENDPOINT;
+  
+  const debugEntry = createNetworkEntry({
+    url: targetUrl,
+    method: 'POST',
+    headers: headers as unknown as Record<string, string>,
+    body: deepseekBody,
+    category: 'chat',
+    accountEmail: email,
+  });
+
+  const resp = await wreqFetch(targetUrl, {
     method: 'POST',
     headers: headers as unknown as Record<string, string>,
     body: JSON.stringify(deepseekBody),
@@ -131,12 +149,21 @@ export async function proxyViaDeepSeekWebChat(
     'deepseek-pipeline',
     `Response: status=${upstreamStatus || resp.status} content-type=${resp.headers.get('content-type')}`,
   );
+  
+  // Create a synthetic response object for recordResponse
+  recordResponse(debugEntry.id, {
+    status: upstreamStatus || resp.status,
+    statusText: resp.statusText,
+    headers: resp.headers,
+  } as any);
 
   if (!resp.ok || upstreamStatus >= 400) {
     const errText = await resp.text().catch(() => 'unknown error');
     const effectiveStatus = upstreamStatus || resp.status;
     const err = new Error('DeepSeek web chat API error (' + effectiveStatus + '): ' + errText.slice(0, 500));
     (err as any).upstreamStatus = effectiveStatus;
+    errorEntry(debugEntry.id, err.message);
+    logStore.recordModelError(model);
     throw err;
   }
 
@@ -147,6 +174,7 @@ export async function proxyViaDeepSeekWebChat(
     const state: DeepSeekStreamState = createStreamState();
     const lines = text.split('\n').filter((l) => l.startsWith('data: '));
     for (const line of lines) {
+      recordStreamChunk(debugEntry.id, line + '\n');
       const data = line.slice(6);
       if (data === '[DONE]') continue;
       parseDeepSeekData(data, state, body.model, session.id);
@@ -158,6 +186,8 @@ export async function proxyViaDeepSeekWebChat(
     logStore.addProcessedOutput(logId, cleanedText);
     if (state.thinkingContent) logStore.addProcessedOutput(logId, '[THINKING] ' + state.thinkingContent);
 
+    completeEntry(debugEntry.id);
+    logStore.recordModelSuccess(model);
     return c.json(
       {
         id: session.id,
@@ -209,11 +239,14 @@ export async function proxyViaDeepSeekWebChat(
           }
           await writer.write(encoder.encode('data: [DONE]\n\n'));
           await writer.close();
+          completeEntry(debugEntry.id);
+          logStore.recordModelSuccess(model);
           break;
         }
 
         const chunkStr = decoder.decode(result.value, { stream: true });
         logStore.addRawChunk(logId, chunkStr);
+        recordStreamChunk(debugEntry.id, chunkStr);
         buffer += chunkStr;
         const lines = buffer.split('\n');
         buffer = lines.pop() || '';
@@ -242,19 +275,25 @@ export async function proxyViaDeepSeekWebChat(
             if (parseResult.done) {
               await writer.write(encoder.encode('data: [DONE]\n\n'));
               await writer.close();
+              completeEntry(debugEntry.id);
+              logStore.recordModelSuccess(model);
               return;
             }
           }
         }
       }
     } catch (err: any) {
-      logStore.log('error', 'deepseek-stream', 'Stream error: ' + err.message);
+      logStore.log('warn', 'deepseek-pipeline', `Stream processing error: ${err.message}`);
+      errorEntry(debugEntry.id, err.message || 'Stream processing error');
+      logStore.recordModelError(model);
       try {
         await writer.write(encoder.encode('data: [DONE]\n\n'));
         await writer.close();
       } catch {
         /* writer may already be closed */
       }
+    } finally {
+      reader.releaseLock();
     }
   })();
 

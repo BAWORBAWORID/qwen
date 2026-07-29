@@ -1,8 +1,0 @@
-2026/07/28-15:18:09.800 5e0 Reusing MANIFEST /app/.auth/account-profile/kapak17133_tainela_com/Default/Local Storage/leveldb/MANIFEST-000001
-2026/07/28-15:18:09.802 5e0 Recovering log #3
-2026/07/28-15:18:09.803 5e0 Level-0 table #3: started
-2026/07/28-15:18:09.805 5e0 Level-0 table #3: 138467 bytes OK
-2026/07/28-15:18:09.805 5e0 Recovering log #4
-2026/07/28-15:18:09.805 5e0 Reusing old log /app/.auth/account-profile/kapak17133_tainela_com/Default/Local Storage/leveldb/000004.log 
-2026/07/28-15:18:09.806 5e0 Delete type=0 #3
-2026/07/28-15:18:09.806 5e0 Delete type=2 #5

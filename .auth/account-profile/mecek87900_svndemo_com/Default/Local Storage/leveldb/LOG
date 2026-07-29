@@ -1,8 +1,0 @@
-2026/07/28-15:16:39.980 4d7 Reusing MANIFEST /app/.auth/account-profile/mecek87900_svndemo_com/Default/Local Storage/leveldb/MANIFEST-000001
-2026/07/28-15:16:39.983 4d7 Recovering log #3
-2026/07/28-15:16:39.983 4d7 Level-0 table #3: started
-2026/07/28-15:16:39.986 4d7 Level-0 table #3: 138372 bytes OK
-2026/07/28-15:16:39.986 4d7 Recovering log #4
-2026/07/28-15:16:39.986 4d7 Reusing old log /app/.auth/account-profile/mecek87900_svndemo_com/Default/Local Storage/leveldb/000004.log 
-2026/07/28-15:16:39.987 4d7 Delete type=0 #3
-2026/07/28-15:16:39.987 4d7 Delete type=2 #5

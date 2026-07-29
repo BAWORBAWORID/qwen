@@ -16,10 +16,7 @@ async function refreshHealth() {
   var accts = data.accounts || {};
   var total = accts.total != null ? accts.total : 0;
   var avail = accts.available != null ? accts.available : 0;
-  setText('kpiTotalAccounts', total);
   setText('kpiTotalAccountsSub', avail + ' available');
-  var pct = total > 0 ? Math.round((avail / total) * 100) : 0;
-  setText('kpiAuthenticatedSub', pct + '% available');
   if (data.uptime != null) {
     uptimeSeconds = data.uptime;
     uptimeBase = Date.now();
@@ -29,23 +26,24 @@ async function refreshHealth() {
   if (Array.isArray(acctData)) {
     var total = acctData.length;
     setText('kpiTotalAccounts', total);
-    var authed = 0;
-    var activeSessions = 0;
+    var qwenAccts = 0;
+    var deepseekAccts = 0;
+    var glmAccts = 0;
     var totalReqs = 0;
     for (var i = 0; i < acctData.length; i++) {
-      if (acctData[i].authenticated) authed++;
       if (acctData[i].providers) {
-        if (acctData[i].providers.qwen || acctData[i].providers.deepseek || acctData[i].providers.glm) {
-          activeSessions++;
-        }
+        if (acctData[i].providers.qwen) qwenAccts++;
+        if (acctData[i].providers.deepseek) deepseekAccts++;
+        if (acctData[i].providers.glm) glmAccts++;
       }
       totalReqs += acctData[i].totalRequests || 0;
     }
-    setText('kpiAuthenticated', authed);
-    var authPct = total > 0 ? Math.round((authed / total) * 100) : 0;
-    setText('kpiAuthenticatedSub', authPct + '% of ' + total);
-    setText('kpiActiveSessions', activeSessions);
-    setText('kpiActiveSessionsSub', 'active accounts');
+    setText('kpiQwen', qwenAccts);
+    setText('kpiQwenSub', 'Active');
+    setText('kpiDeepseek', deepseekAccts);
+    setText('kpiDeepseekSub', 'Active');
+    setText('kpiGlm', glmAccts);
+    setText('kpiGlmSub', 'Active');
     setText('kpiTotalRequests', totalReqs);
   }
 }

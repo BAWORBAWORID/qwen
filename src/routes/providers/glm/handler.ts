@@ -76,6 +76,8 @@ export async function glmHandler(c: Context, body: OpenAIRequest): Promise<Respo
       const { proxyViaGlmWebChat } = await import('./pipeline.ts');
       const result = await proxyViaGlmWebChat(c, body, email, jwt, model, isStream, logId);
 
+      const { incrementTotalRequests } = await import('../../../services/auth.ts');
+      incrementTotalRequests(email);
       decrementInFlight(email);
       logStore.finalizeRequest(logId);
       return result;

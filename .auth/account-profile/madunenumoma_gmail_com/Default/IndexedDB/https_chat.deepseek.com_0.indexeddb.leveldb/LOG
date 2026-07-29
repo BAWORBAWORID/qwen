@@ -1,7 +1,0 @@
-2026/07/28-14:49:59.516 316 Reusing MANIFEST /app/.auth/account-profile/madunenumoma_gmail_com/Default/IndexedDB/https_chat.deepseek.com_0.indexeddb.leveldb/MANIFEST-000095
-2026/07/28-14:49:59.516 316 Delete type=2 #94
-2026/07/28-14:49:59.516 316 Delete type=2 #96
-2026/07/28-14:49:59.517 31c Level-0 table #104: started
-2026/07/28-14:49:59.517 31c Level-0 table #104: 0 bytes OK
-2026/07/28-14:49:59.518 31c Delete type=0 #102
-2026/07/28-14:49:59.518 316 Manual compaction at level-0 from '\x00\x15\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x16\x00\x00\x00' @ 0 : 0; will stop at (end)

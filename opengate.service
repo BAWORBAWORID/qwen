@@ -1,0 +1,29 @@
+[Unit]
+Description=OpenGate API Server
+After=network.target
+
+[Service]
+Type=simple
+# Ganti dengan username VPS Anda jika tidak menggunakan root
+User=root
+# Sesuaikan path ini dengan lokasi folder project di VPS Anda
+WorkingDirectory=/root/opengate
+
+# Environment variables
+Environment="CLOAKBROWSER_LICENSE_KEY=cb_d1d46e45921a46b79f68d31ed787d325"
+# Pastikan path ke binary bun sudah benar (cek dengan perintah `which bun` di VPS)
+Environment="PATH=/root/.bun/bin:/usr/local/bin:/usr/bin:/bin"
+
+# Kita menggunakan xvfb-run agar tidak repot mengatur display server manual
+ExecStart=/usr/bin/xvfb-run -a bun src/index.tsx
+
+# Pengaturan Restart otomatis jika terjadi crash
+Restart=always
+RestartSec=3
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=opengate
+
+[Install]
+WantedBy=multi-user.target

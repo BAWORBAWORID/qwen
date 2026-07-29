@@ -14,6 +14,14 @@ export interface GlmUser {
   token: string;
 }
 
+export function extractGlmJwt(tokenStr: string): string {
+  if (tokenStr.includes('token=')) {
+    const match = tokenStr.match(/token=([^;]+)/);
+    return match ? match[1] : tokenStr;
+  }
+  return tokenStr;
+}
+
 export interface GlmChatSession {
   id: string;
   user_id: string;
@@ -32,12 +40,16 @@ const SESSION_TTL = 30 * 60 * 1000;
 export async function getCurrentUser(jwt: string): Promise<GlmUser | null> {
   try {
     const { wreqFetch } = await import('../../../services/wreqFetch.ts');
+    const headers: any = {
+      Authorization: `Bearer ${extractGlmJwt(jwt)}`,
+      'Content-Type': 'application/json',
+    };
+    if (jwt.includes('=')) {
+      headers['Cookie'] = jwt;
+    }
     const res = await wreqFetch(`${GLM_BASE_URL}/api/v1/auths/`, {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
       timeout: 10,
       impersonate: 'chrome_142',
     });
@@ -77,9 +89,12 @@ export async function getOrCreateChatSession(jwt: string, model: string): Promis
 
     // Clean up old sessions (keep max 5)
     try {
+      const headers: any = { Authorization: `Bearer ${extractGlmJwt(jwt)}` };
+      if (jwt.includes('=')) headers['Cookie'] = jwt;
+      
       const sessionsRes = await wreqFetch(`${GLM_BASE_URL}/api/v1/chats/`, {
         method: 'GET',
-        headers: { Authorization: `Bearer ${jwt}` },
+        headers,
         timeout: 10,
         impersonate: 'chrome_142',
       });
@@ -90,7 +105,7 @@ export async function getOrCreateChatSession(jwt: string, model: string): Promis
         for (let i = 5; i < chats.length; i++) {
           wreqFetch(`${GLM_BASE_URL}/api/v1/chats/${chats[i].id}`, {
             method: 'DELETE',
-            headers: { Authorization: `Bearer ${jwt}` },
+            headers,
             timeout: 10,
             impersonate: 'chrome_142',
           }).catch(() => {});
@@ -123,12 +138,15 @@ export async function getOrCreateChatSession(jwt: string, model: string): Promis
       },
     };
 
+    const headers: any = {
+      Authorization: `Bearer ${extractGlmJwt(jwt)}`,
+      'Content-Type': 'application/json',
+    };
+    if (jwt.includes('=')) headers['Cookie'] = jwt;
+
     const chatRes = await wreqFetch(`${GLM_BASE_URL}/api/v1/chats/new`, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify(chatBody),
       timeout: 15,
       impersonate: 'chrome_142',

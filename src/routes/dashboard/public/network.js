@@ -132,6 +132,23 @@ function renderNetworkEntries(entries) {
     filteredCountEl.textContent = filtered.length === total ? total + ' entries' : filtered.length + ' of ' + total + ' entries';
   }
 
+  /* Save scroll state */
+  var mainScroll = 0;
+  var mainEl = document.querySelector('.main-content');
+  if (mainEl) mainScroll = mainEl.scrollTop;
+  else mainScroll = window.scrollY;
+  
+  var openScrolls = {};
+  var openPreTags = container.querySelectorAll('.net-entry-body.open pre');
+  for (var k = 0; k < openPreTags.length; k++) {
+    var header = openPreTags[k].closest('.net-entry').querySelector('.net-entry-header');
+    if (header) {
+      var entryId = header.getAttribute('data-id');
+      if (!openScrolls[entryId]) openScrolls[entryId] = [];
+      openScrolls[entryId].push(openPreTags[k].scrollTop);
+    }
+  }
+
   /* Keep empty/error state inside container, clear everything else */
   var emptyEl = document.getElementById('netEmpty');
   var errorEl = document.getElementById('netError');
@@ -197,6 +214,27 @@ function renderNetworkEntries(entries) {
 
     container.appendChild(card);
   }
+  
+  /* Restore scroll state */
+  requestAnimationFrame(function() {
+    var mainEl = document.querySelector('.main-content');
+    if (mainEl) mainEl.scrollTop = mainScroll;
+    else window.scrollTo(0, mainScroll);
+    
+    var newOpenBodies = container.querySelectorAll('.net-entry-body.open');
+    for (var k = 0; k < newOpenBodies.length; k++) {
+      var header = newOpenBodies[k].previousElementSibling;
+      if (header) {
+        var entryId = header.getAttribute('data-id');
+        if (openScrolls[entryId]) {
+          var pres = newOpenBodies[k].querySelectorAll('pre');
+          for (var j = 0; j < pres.length && j < openScrolls[entryId].length; j++) {
+            pres[j].scrollTop = openScrolls[entryId][j];
+          }
+        }
+      }
+    }
+  });
 }
 
 /* ── Render Entry Detail — all sections open ── */

@@ -40,8 +40,6 @@ playwright-report/
 # Runtime and browser automation
 .qwen/
 browser-profile/
-cookies/
-sessions/
 
 # Agent and AI tool workspaces
 .omo/
@@ -92,3 +90,6 @@ extract output qwen/
 research
 token-usage-output.txt
 AGENTS.TEMP.md
+
+# Playwright profiles
+.auth/account-profile/

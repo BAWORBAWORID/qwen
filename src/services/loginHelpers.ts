@@ -455,13 +455,15 @@ export async function manualBrowserLogin(email: string, password: string, opts: 
         await page.waitForTimeout(100 + Math.random() * 150);
         await passwordInput.first().pressSequentially(password, { delay: 25 + Math.random() * 40 });
         await page.waitForTimeout(200 + Math.random() * 300);
+        await passwordInput.first().press('Enter');
+        await page.waitForTimeout(500);
       }
 
-      // Try clicking submit button
+      // Try clicking submit button (as fallback)
       try {
         const submitBtn = page
           .locator(
-            'button[type="submit"], button:has-text("Sign in"), button:has-text("Login"), button:has-text("Log in"), button:has-text("Continue")',
+            'button[type="submit"], button:has-text("Sign in"), button:has-text("Login"), button:has-text("Log in"), button:has-text("Continue"), .ds-button:has-text("Log in"), .ds-button:has-text("Sign in"), div[role="button"]:has-text("Log in")',
           )
           .first();
         await submitBtn.click({ timeout: 3000 });

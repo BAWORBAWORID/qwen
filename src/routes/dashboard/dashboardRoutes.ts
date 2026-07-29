@@ -638,6 +638,31 @@ export function registerDashboardRoutes(app: Hono): void {
     },
   );
 
+  app.post(
+    '/api/accounts/:email/provider/:provider/token',
+    async (c, next) => requireApiKey(c, next),
+    async (c) => {
+      try {
+        const email = c.req.param('email');
+        const provider = c.req.param('provider');
+        const { token } = await c.req.json();
+        if (!token) return c.json({ error: 'Token is required' }, 400);
+
+        const { setProviderState, setProviderStateLastError } = await import('../../services/accountManager.ts');
+        setProviderStateLastError(email, provider, null);
+        setProviderState(email, provider, {
+          token,
+          expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+          refreshToken: null,
+          lastLoginAttempt: null,
+        });
+        return c.json({ ok: true });
+      } catch (err: any) {
+        return c.json({ error: err.message }, 500);
+      }
+    },
+  );
+
   app.delete(
     '/api/accounts/:email/provider/:provider',
     async (c, next) => requireApiKey(c, next),

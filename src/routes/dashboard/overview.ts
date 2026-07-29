@@ -27,9 +27,10 @@ ${sidebarHtml('overview')}
 
         <!-- KPI Grid -->
         <div class="kpi-grid" id="kpiGrid">
-          <div class="kpi-card"><span class="kpi-label">Total Accounts</span><span class="kpi-value" id="kpiTotalAccounts">—</span><span class="kpi-sub" id="kpiTotalAccountsSub"></span></div>
-          <div class="kpi-card"><span class="kpi-label">Authenticated</span><span class="kpi-value" id="kpiAuthenticated">—</span><span class="kpi-sub" id="kpiAuthenticatedSub"></span></div>
-          <div class="kpi-card"><span class="kpi-label">Active Sessions</span><span class="kpi-value" id="kpiActiveSessions">—</span><span class="kpi-sub" id="kpiActiveSessionsSub"></span></div>
+          <div class="kpi-card"><span class="kpi-label">Total Account</span><span class="kpi-value" id="kpiTotalAccounts">—</span><span class="kpi-sub" id="kpiTotalAccountsSub"></span></div>
+          <div class="kpi-card"><span class="kpi-label">Qwen Account</span><span class="kpi-value" id="kpiQwen">—</span><span class="kpi-sub" id="kpiQwenSub"></span></div>
+          <div class="kpi-card"><span class="kpi-label">Deepseek Account</span><span class="kpi-value" id="kpiDeepseek">—</span><span class="kpi-sub" id="kpiDeepseekSub"></span></div>
+          <div class="kpi-card"><span class="kpi-label">GLM Account</span><span class="kpi-value" id="kpiGlm">—</span><span class="kpi-sub" id="kpiGlmSub"></span></div>
           <div class="kpi-card"><span class="kpi-label">Queue</span><span class="kpi-value" id="kpiQueue">—</span><span class="kpi-sub" id="kpiQueueSub"></span></div>
           <div class="kpi-card"><span class="kpi-label">Total Requests</span><span class="kpi-value" id="kpiTotalRequests">—</span><span class="kpi-sub" id="kpiTotalRequestsSub"></span></div>
           <div class="kpi-card"><span class="kpi-label">Uptime</span><span class="kpi-value" id="kpiUptime">—</span><span class="kpi-sub" id="kpiUptimeSub"></span></div>

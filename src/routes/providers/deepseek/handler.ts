@@ -80,6 +80,8 @@ export async function deepseekHandler(c: Context, body: OpenAIRequest): Promise<
       // For streaming, the response body reader holds the stream open; decrement
       // is a load-balancing heuristic, so slight over-counting is harmless
       // (safety valve at 20, auto-correction on next request from same account).
+      const { incrementTotalRequests } = await import('../../../services/auth.ts');
+      incrementTotalRequests(email);
       decrementInFlight(email);
       logStore.finalizeRequest(logId);
       return result;

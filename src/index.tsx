@@ -383,6 +383,32 @@ if (import.meta.main) {
         logStore.log('warn', 'boot', `[2/5] Configure failed: ${err.message}`);
       }
 
+      // ── Phase 2c: DeepSeek Auto-login ──
+      logStore.log('info', 'boot', '[2.5/5] DeepSeek auto-login...');
+      try {
+        const dsAccounts = getAccounts().filter((a) => a.providers?.includes('deepseek'));
+        for (const acct of dsAccounts) {
+          logStore.log('info', 'boot', `Starting deepseek auto-login for ${acct.email}`);
+          const { loginDeepseekAuto } = await import('./services/deepseekLogin.ts');
+          const { setProviderState, setProviderStateLastError } = await import('./services/accountManager.ts');
+          
+          loginDeepseekAuto(acct.email, acct.password).then(result => {
+             if (result.status === 'success' && result.result) {
+                setProviderStateLastError(acct.email, 'deepseek', null);
+                setProviderState(acct.email, 'deepseek', result.result);
+                logStore.log('info', 'boot', `Deepseek auto-login success for ${acct.email}`);
+             } else {
+                setProviderStateLastError(acct.email, 'deepseek', `Auto-login failed: ${result.status}`);
+                logStore.log('warn', 'boot', `Deepseek auto-login failed for ${acct.email}: ${result.status}`);
+             }
+          }).catch(err => {
+             logStore.log('warn', 'boot', `Deepseek auto-login error for ${acct.email}: ${err.message}`);
+          });
+        }
+      } catch (err: any) {
+        logStore.log('warn', 'boot', `Deepseek auto-login startup error: ${err.message}`);
+      }
+
       logStore.log('info', 'boot', '[3/5] Headers ready (browserless — no pre-warm needed)');
 
       logStore.log('info', 'boot', 'Background initialization complete');

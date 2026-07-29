@@ -9,6 +9,13 @@
 import type { Context } from 'hono';
 import { getProviderState } from '../../../services/accountManager.ts';
 import { logStore } from '../../../services/logStore.ts';
+import {
+  createNetworkEntry,
+  recordResponse,
+  recordStreamChunk,
+  completeEntry,
+  errorEntry,
+} from '../../../services/networkDebug.ts';
 import { cleanTextOfXmlArtifacts } from '../../../tools/xmlToolParser.ts';
 import type { OpenAIRequest } from '../../../types/openai.ts';
 import { filterContent } from '../../../utils/contentFilter.ts';
@@ -141,7 +148,18 @@ export async function proxyViaGlmWebChat(
   const headers = await buildGlmHeaders(ctx, bodyStr, requestId, signature);
 
   // 6. Send request to GLM via wreqFetch
-  logStore.log('debug', 'glm-pipeline', `Fetching ${url.slice(0, 100)} via wreqFetch`);
+  console.log("GLM Request:", url, JSON.stringify(glmBody));
+  logStore.log("debug", "glm-pipeline", `Fetching ${url.slice(0, 100)} via wreqFetch`);
+  
+  const debugEntry = createNetworkEntry({
+    url: url,
+    method: 'POST',
+    headers: headers as unknown as Record<string, string>,
+    body: glmBody,
+    category: 'chat',
+    accountEmail: email,
+  });
+
   const resp = await wreqFetch(url, {
     method: 'POST',
     headers,
@@ -154,6 +172,12 @@ export async function proxyViaGlmWebChat(
   const upstreamStatus = parseInt(resp.headers.get('X-Upstream-Status') || '0', 10);
   logStore.log('debug', 'glm-pipeline', `Response: status=${upstreamStatus || resp.status}`);
 
+  recordResponse(debugEntry.id, {
+    status: upstreamStatus || resp.status,
+    statusText: resp.statusText,
+    headers: resp.headers,
+  } as any);
+
   if (!resp.ok || upstreamStatus >= 400) {
     const errText = await resp.text().catch(() => 'unknown error');
     const effStatus = upstreamStatus || resp.status;
@@ -163,17 +187,22 @@ export async function proxyViaGlmWebChat(
       invalidateCaptchaToken();
       const err = new Error('GLM requires CAPTCHA verification. Login via dashboard → GLM → Login.');
       (err as any).upstreamStatus = 403;
+      errorEntry(debugEntry.id, err.message);
+      logStore.recordModelError(model);
       throw err;
     }
 
-    const err = new Error(`GLM API error (${effStatus}): ${errText.slice(0, 500)}`);
+    const err = new Error('GLM web chat API error (' + effStatus + '): ' + errText.slice(0, 500));
     (err as any).upstreamStatus = effStatus;
+    errorEntry(debugEntry.id, err.message);
+    logStore.recordModelError(model);
     throw err;
   }
 
   // Non-streaming: buffer entire SSE response, extract content, filter
   if (!isStream) {
     const text = await resp.text();
+    recordStreamChunk(debugEntry.id, text);
     logStore.log('debug', 'glm-raw', `len=${text.length} head=${text.slice(0, 1000)}`);
 
     const lines = text.split('\n').filter((l) => l.startsWith('data: '));
@@ -192,6 +221,8 @@ export async function proxyViaGlmWebChat(
           invalidateCaptchaToken();
           const err = new Error('GLM requires CAPTCHA verification: ' + (data.error.detail || 'CAPTCHA required'));
           (err as any).upstreamStatus = 403;
+          errorEntry(debugEntry.id, err.message);
+          logStore.recordModelError(model);
           throw err;
         }
 
@@ -223,17 +254,18 @@ export async function proxyViaGlmWebChat(
       responseMsg.reasoning_content = fullThinking || filtered.thinking;
     }
 
-    return c.json(
-      {
+    const result = {
         id: session.id,
         object: 'chat.completion',
         created: Math.floor(Date.now() / 1000),
         model: body.model,
         choices: [{ index: 0, message: responseMsg, finish_reason: 'stop' }],
         usage: usage || { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 },
-      },
-      { headers: { 'content-type': 'application/json' } },
-    );
+      };
+      
+    completeEntry(debugEntry.id);
+    logStore.recordModelSuccess(model);
+    return c.json(result, { headers: { 'content-type': 'application/json' } });
   }
 
   // ── Streaming: convert GLM three-phase SSE to OpenAI format ──
@@ -262,6 +294,7 @@ export async function proxyViaGlmWebChat(
           break;
         }
         const chunkStr = decoder.decode(value, { stream: true });
+        recordStreamChunk(debugEntry.id, chunkStr);
         logStore.addRawChunk(logId, chunkStr);
         buffer += chunkStr;
 
@@ -274,6 +307,8 @@ export async function proxyViaGlmWebChat(
             await writer.write(encoder.encode(chunk));
           }
           if (streamDone) {
+            completeEntry(debugEntry.id);
+            logStore.recordModelSuccess(model);
             await writer.close();
             return;
           }
@@ -281,10 +316,14 @@ export async function proxyViaGlmWebChat(
       }
     } catch (err: any) {
       logStore.log('error', 'glm-stream', `Stream error: ${err.message}`);
+      errorEntry(debugEntry.id, err.message || 'Stream processing error');
+      logStore.recordModelError(model);
       try {
         await writer.write(encoder.encode('data: [DONE]\n\n'));
         await writer.close();
       } catch {}
+    } finally {
+        reader.releaseLock();
     }
   })();
 

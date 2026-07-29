@@ -31,7 +31,7 @@ function cleanupSingletonLock(profileDir: string): void {
   for (const name of ['SingletonLock', 'SingletonSocket', 'SingletonCookie']) {
     try {
       const f = join(profileDir, name);
-      if (existsSync(f)) rmSync(f, { recursive: true });
+      rmSync(f, { recursive: true, force: true });
     } catch {
       // best effort
     }

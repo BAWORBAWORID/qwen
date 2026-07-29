@@ -47,7 +47,7 @@ export function buildFingerprintParams(ctx: GlmContext): URLSearchParams {
   params.set('user_id', ctx.userId || '');
   params.set('version', GLM_QUERY_VERSION);
   params.set('platform', 'web');
-  params.set('token', ctx.jwt);
+  params.set('token', extractGlmJwt(ctx.jwt));
   params.set('user_agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36');
   params.set('language', 'en-US');
   params.set('languages', 'en-US,en');
@@ -88,9 +88,11 @@ export function buildFingerprintParams(ctx: GlmContext): URLSearchParams {
  * Matches the browser's request headers exactly.
  * Computes x-signature from URL params if not provided.
  */
+import { extractGlmJwt } from './session.ts';
+
 export function buildGlmHeaders(ctx: GlmContext, body: string, requestId: string, signature?: string): Record<string, string> {
   const headers: Record<string, string> = {
-    authorization: `Bearer ${ctx.jwt}`,
+    authorization: `Bearer ${extractGlmJwt(ctx.jwt)}`,
     'content-type': 'application/json',
     'accept-language': 'en-US',
     'x-fe-version': GLM_FE_VERSION,
@@ -108,12 +110,16 @@ export function buildGlmHeaders(ctx: GlmContext, body: string, requestId: string
     'sec-gpc': '1',
   };
 
+  if (ctx.jwt.includes('=')) {
+    headers['cookie'] = ctx.jwt;
+  }
+
   // x-signature: use provided value or compute best-effort
   if (signature) {
     headers['x-signature'] = signature;
   } else {
     const ts = String(Date.now());
-    headers['x-signature'] = computeSignature(requestId, ts, ctx.userId, ctx.jwt);
+    headers['x-signature'] = computeSignature(requestId, ts, ctx.userId, extractGlmJwt(ctx.jwt));
   }
 
   return headers;
