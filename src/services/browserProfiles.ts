@@ -843,7 +843,7 @@ async function refreshViaProfile(email: string): Promise<boolean> {
       userDataDir: profileDir,
       headless: true,
       humanize: true,
-      geoip: true,
+      geoip: false,
       args: [...BROWSER_DEFAULT_ARGS],
     });
 

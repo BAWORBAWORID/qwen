@@ -134,7 +134,7 @@ async function initPlaywright(headless = true, browserType: BrowserType = 'chrom
         defaultBrowser = await cloakLaunch({
           headless,
           humanize: true,
-          geoip: true,
+          geoip: false,
           args: [
             '--disable-dev-shm-usage',
             '--no-sandbox',
