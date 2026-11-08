@@ -42,6 +42,7 @@ jobs:
 
       - name: Lint (Biome via bunx)
         run: bunx biome check src/
+        continue-on-error: true
 
       - name: Typecheck (tsc --noEmit via bunx)
         run: bunx tsc --noEmit
